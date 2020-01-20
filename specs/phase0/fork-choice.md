@@ -305,6 +305,14 @@ def on_block(store: Store, signed_block: SignedBeaconBlock) -> None:
     # Update finalized checkpoint
     if state.finalized_checkpoint.epoch > store.finalized_checkpoint.epoch:
         store.finalized_checkpoint = state.finalized_checkpoint
+        finalized_block = store.blocks[store.finalized_checkpoint.root]
+        finalized_root = store.finalized_checkpoint.root
+        should_update_justified = (
+            state.current_justified_checkpoint.epoch > store.justified_checkpoint.epoch
+            or get_ancestor(store, store.justified_checkpoint.root, finalized_block.slot) != finalized_root
+        )
+        if should_update_justified:
+            store.justified_checkpoint = state.current_justified_checkpoint
 ```
 
 #### `on_attestation`

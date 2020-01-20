@@ -214,3 +214,9 @@ def test_on_block_outside_safe_slots_and_multiple_better_justified(spec, state):
     assert store.justified_checkpoint == previously_justified
     # ensure the best from the series was stored
     assert store.best_justified_checkpoint == best_justified_checkpoint
+
+
+@with_all_phases
+@spec_state_test
+def test_on_block_outside_safe_slots_but_finality(spec, state):
+    pass
